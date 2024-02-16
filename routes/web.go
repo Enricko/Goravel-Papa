@@ -1,6 +1,8 @@
 package routes
 
 import (
+	"goravel/app/http/controllers"
+
 	"github.com/goravel/framework/contracts/http"
 	"github.com/goravel/framework/facades"
 	"github.com/goravel/framework/support"
@@ -12,4 +14,9 @@ func Web() {
 			"version": support.Version,
 		})
 	})
+
+
+	homeController := controllers.NewHomeController()
+	facades.Route().Get("/users", homeController.Index)
+	facades.Route().Post("/update", homeController.Update)
 }
