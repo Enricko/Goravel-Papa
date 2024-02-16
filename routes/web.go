@@ -17,6 +17,5 @@ func Web() {
 
 
 	homeController := controllers.NewHomeController()
-	facades.Route().Get("/users", homeController.Index)
-	facades.Route().Post("/update", homeController.Update)
+	facades.Route().Get("/index", homeController.Index)
 }

@@ -28,36 +28,94 @@
                         <button class="btn btn-primary" onclick="return add_produk()">+</button>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-8">
-                        <input id="add-produk-paket-search" type="search" class="form-control" autocomplete="off">
-                    </div>
-                    <div class="col-2">
-                        <input id="add-produk-paket-value" type="search" class="form-control" autocomplete="off"
-                            placeholder="Value" oninput='javascript: if (this.value > 3) this.value = 3'>
-                    </div>
-                    <div class="col-1">
-                        <button class="btn btn-primary" onclick="return add_produk_paket()">+</button>
-                    </div>
-                </div>
             </div>
-            <!-- <div class="justify-content-end">
-                <button class="btn btn-secondary" onclick="window.print()">PRINT</button>
-            </div> -->
         </div>
         <hr style="height:2px;border-width:0;color:gray;background-color:gray;">
     </div>
-    <h1>Test</h1>
-    <h1>Real-Time Input</h1>
-    <form id="myForm">
-        <label for="inputField">Input:</label>
-        <input type="text" id="inputField" name="input">
-        <button type="button" onclick="submitForm()">Submit</button>
-    </form>
+    <div class="container-fluid detail-transaksi" style="font-size:15px;width:700px">
+        <div class="row ">
+            <div class="col-12 col-md-4">
+                <div class="text-center mt-3">
+                    <p style='font-size:18px;font-weight:700'>PURCHASING ORDER</p><br>Tgl.{{ .time }}
+                </div>
+            </div>
 
-    <div id="output"></div>
-
-
+            <div class="col-12 col-md-8">
+                <div class="float-left mt-3" style='font-size:13px'>
+                    <div class='row' id='nama-outlet'>
+                        <div class='col-4'>Nama Outlet</div>
+                        <div class='col-8' id='value_nama_outlet'>:</div>
+                    </div>
+                    <div class='row' id='alamat'>
+                        <div class='col-4'>Alamat</div>
+                        <div class='col-8' id='value_alamat'>:</div>
+                    </div>
+                    <div class='row' id='nama-sales'>
+                        <div class='col-4'>Nama Sales</div>
+                        <div class='col-8' id='value_sales'>:</div>
+                    </div>
+                    <div class='row' id='nama-sales'>
+                        <div class='col-4'>Channel Outlet AAM</div>
+                        <div class='col-8' id='value_channel'>:</div>
+                    </div>
+                    <div class='row' id='nama-sales'>
+                        <div class='col-4'>AVG</div>
+                        <div class='col-8' id='value_avg'>:</div>
+                    </div>
+                    <div class='row' id='nama-sales'>
+                        <div class='col-4'>Objective Harian</div>
+                        <div class='col-8' id='value_q_avg'>:</div>
+                    </div>
+                    <div class='row'>
+                        <div class='col-4'>Total Value</div>
+                        <div class='col-8'>: <span id='total-value'></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='d-flex justify-content-center'>
+            <table class="table-bordered table-responsive my-3">
+                <thead>
+                    <tr class="text-center">
+                        <th>KODE</th>
+                        <th>PRODUK</th>
+                        <th>HNA</th>
+                        <th>ORDER</th>
+                        <th>TOTAL VALUE</th>
+                        <th>DISC</th>
+                        <th>ePRF</th>
+                        <th style="border: 1px solid transparent"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{ range .product}}
+                    <tr id="produk-{{ .Code }}" class="d-none" style="position:relative">
+                        <td style='font-size:20px'>{{ .Code }}</td>
+                        <td style='font-size:13px'>{{ .NameProduct }}</td>
+                        <td class='text-center'>Rp.{{ .HNA }}</td>
+                        <td style='font-size:20px;text-align:center'><input type="number" style="width: 100px;"
+                                class="form-control text-center"
+                                oninput="return order(value,'{{ .HNA }}','{{ .Code }}')" id="order-{{ .Code }}"></td>
+                        <td id="total-{{ .Code }}"></td>
+                        <td>
+                            <div class="input-group flex-nowrap">
+                                <input type="number" class="form-control text-center" id="disc-{{ .Code }}"
+                                    aria-describedby="addon-wrapping" style="width:50px;"
+                                    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                    maxlength="2">
+                                <span class="input-group-text" id="addon-wrapping">%</span>
+                            </div>
+                        </td>
+                        <td><input type="text" style="width: 70px;" class="form-control text-center"
+                                id="eprf-{{ .Code }}"></td>
+                        <td style="border: 1px solid transparent"><button class="btn btn-danger"
+                                onclick="return remove_produk('{{ .Code }}')">-</button></td>
+                    </tr>
+                    {{end}}
+                </tbody>
+            </table>
+        </div>
+    </div>
 
 </body>
 
@@ -65,10 +123,32 @@
 <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/autoComplete.min.js"></script>
 <script>
     var customersId = [];
+    var customer = {};
     "{{ range .customer }}"
     customersId.push("{{ .CustId}}|{{.CustName}}")
+    customer["{{ .CustId}}|{{.CustName}}"] = {
+        "branch": "{{.Branch}}",
+        "custname": "{{.CustName}}",
+        "alamat": "{{.Alamat}}",
+        "kota": "{{.Kota}}",
+        "salesname": "{{.SalesName}}",
+        "channel": "{{.Channel}}",
+        "avg2023": "{{.Avg2023}}",
+        "q4avg2023": "{{.Q4Avg2023}}",
+    }
     "{{ end }}"
-    console.log(customersId);
+    function detail_outlet(value) {
+        if (customer[value]) {
+            document.getElementById("value_nama_outlet").innerText = ": " + customer[value].branch;
+            document.getElementById("value_alamat").innerText = ": " + customer[value].alamat;
+            document.getElementById("value_sales").innerText = ": " + customer[value].salesname;
+            document.getElementById("value_channel").innerText = ": " + customer[value].channel;
+            document.getElementById("value_avg").innerText = ": " + customer[value].avg2023;
+            document.getElementById("value_q_avg").innerText = ": " + customer[value].q4avg2023;
+        } else {
+            console.log("Key does not exist");
+        }
+    }
     const autoCompleteJS = new autoComplete({
         selector: "#search-outlet",
         placeHolder: "Search Outlet...",
@@ -103,6 +183,110 @@
             }
         }
     });
+</script>
+<script>
+    var customersIdProduct = [];
+    "{{ range .product }}"
+    customersIdProduct.push("{{ .Code}}|{{.NameProduct}}")
+    "{{ end }}"
+    const autoCompleteJS1 = new autoComplete({
+        selector: "#add-produk",
+        placeHolder: "Tambah Produk...",
+        data: {
+            src: customersIdProduct,
+            cache: true,
+        },
+        resultsList: {
+            element: (list, data) => {
+                if (!data.results.length) {
+                    // Create "No Results" message element
+                    const message = document.createElement("div");
+                    // Add class to the created element
+                    message.setAttribute("class", "no_result");
+                    // Add message text content
+                    message.innerHTML = `<span>Found No Results for "${data.query}"`;
+                    // Append message element to the results list
+                    list.prepend(message);
+                }
+            },
+            noResults: true,
+        },
+        resultItem: {
+            highlight: true
+        },
+        events: {
+            input: {
+                selection: (event) => {
+                    const selection = event.detail.selection.value;
+                    autoCompleteJS1.input.value = selection;
+                }
+            }
+        }
+    });
+</script>
+
+<script type="text/javascript">
+    // function detail_outlet(value){
+    //     $.ajax({
+    //         type : 'get',
+    //         url : '/detail_transaksi',
+    //         data:{'search':value},
+    //         success:function(data){
+    //             $('.detail-transaksi').html(data);
+    //         }
+    //     });
+    // }
+    function add_produk() {
+        var produk = document.getElementById("add-produk").value;
+        var arr = produk.split('|');
+        document.getElementById("produk-" + arr[0]).classList.remove('d-none');
+        var number = 0;
+        "{{range .product}}"
+        var cek = document.getElementById("produk-" + "{{ .Code }}").classList.contains('d-none');
+        if (!cek) {
+            number += 1;
+            document.getElementById("no-" + "{{ .Code }}").innerHTML = number;
+        } else {
+
+        }
+        "{{end}}"
+    }
+    function remove_produk(kode) {
+        document.getElementById('total-' + kode).innerHTML = '';
+        document.getElementById("order-" + kode).value = null;
+        document.getElementById("disc-" + kode).value = null;
+        document.getElementById("eprf-" + kode).value = '';
+        document.getElementById("produk-" + kode).classList.add('d-none');
+        allTotalValue();
+    }
+    function order(value, hna, kode) {
+        var totalValueDisplay = 0;
+        var produk = document.getElementById("add-produk").value;
+        var number = value * hna;
+        var total = Intl.NumberFormat().format(number);
+        if (number <= 0) {
+            document.getElementById("total-" + kode).innerHTML = '';
+        } else {
+            document.getElementById("total-" + kode).innerHTML = "Rp." + total;
+        }
+        allTotalValue();
+    }
+    function allTotalValue() {
+        var totalValueDisplay = 0;
+
+        "{{range .product}}"
+        var produkVal = document.getElementById("total-" + '{{ .Code }}').innerHTML;
+        if (produkVal != '') {
+            var produkReplaceRp = produkVal.replace("Rp.", "");
+            var produkReplaceComa = produkReplaceRp.replaceAll(",", "");
+            var produkReplaceDot = produkReplaceComa.replaceAll(".", "");
+            var produkNumVal = parseInt(produkReplaceDot);
+            totalValueDisplay += produkNumVal;
+        }
+        "{{end}}"
+        var formatTotalValue = Intl.NumberFormat().format(totalValueDisplay);
+        document.getElementById("total-value").innerHTML = "Rp." + formatTotalValue;
+    }
 </script>
 <script>
     function submitForm() {
