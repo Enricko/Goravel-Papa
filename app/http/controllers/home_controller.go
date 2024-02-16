@@ -32,7 +32,13 @@ func (r *HomeController) Update(ctx http.Context) http.Response {
 }
 
 func (r *HomeController) Index(ctx http.Context) http.Response {
-	data, err := openURL("https://www.dropbox.com/scl/fi/ga9aesugfhxrt2dmuknre/Data-base-aplikasi-bayer-joglopwk-160224.xlsx?rlkey=4x85x8rdq9r3x7wyzgxjnofki&dl=1")
+	data, err := openURLCust("https://www.dropbox.com/scl/fi/ga9aesugfhxrt2dmuknre/Data-base-aplikasi-bayer-joglopwk-160224.xlsx?rlkey=4x85x8rdq9r3x7wyzgxjnofki&dl=1")
+	if err != nil {
+		return ctx.Response().Json(http.StatusInternalServerError, http.Json{
+			"message": err,
+		})
+	}
+	dataProduct, err := openURLItem("https://www.dropbox.com/scl/fi/ga9aesugfhxrt2dmuknre/Data-base-aplikasi-bayer-joglopwk-160224.xlsx?rlkey=4x85x8rdq9r3x7wyzgxjnofki&dl=1")
 	if err != nil {
 		return ctx.Response().Json(http.StatusInternalServerError, http.Json{
 			"message": err,
@@ -40,9 +46,21 @@ func (r *HomeController) Index(ctx http.Context) http.Response {
 	}
 	return ctx.Response().View().Make("home.html", map[string]any{
 		"customer": data,
+		"produck": dataProduct,
 	})
 }
 
+type ExlProduct struct {
+	Branch    string
+	CustId    string
+	CustName  string
+	Alamat    string
+	Kota      string
+	SalesName string
+	Channel   string
+	Avg2023   string
+	Q4Avg2023 string
+}
 type ExlData struct {
 	Branch    string
 	CustId    string
@@ -50,12 +68,12 @@ type ExlData struct {
 	Alamat    string
 	Kota      string
 	SalesName string
-	// Channel   string
-	// Avg2023   string
-	// Q4Avg2023 string
+	Channel   string
+	Avg2023   string
+	Q4Avg2023 string
 }
 
-func openURL(urlLink string) ([]ExlData, error) {
+func openURLCust(urlLink string) ([]ExlData, error) {
 	var exlData []ExlData
 	data, err := getData(urlLink)
 	if err != nil {
@@ -107,9 +125,9 @@ func openURL(urlLink string) ([]ExlData, error) {
 			Alamat:    handleNullValue(row[3]),
 			Kota:      handleNullValue(row[4]),
 			SalesName: handleNullValue(row[5]),
-			// Channel:   handleNullValue(row[6]),
-			// Avg2023:   handleNullValue(row[7]),
-			// Q4Avg2023: handleNullValue(row[8]),
+			Channel:   handleNullValue(row[6]),
+			Avg2023:   handleNullValue(row[7]),
+			Q4Avg2023: handleNullValue(row[8]),
 		}
 		exlData = append(exlData, rowData)
 	}
