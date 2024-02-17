@@ -26,7 +26,7 @@ func main() {
 	r.LoadHTMLGlob("templates/*")
 
 	// Define a route handler
-	r.GET("/", indexHandler)
+	r.GET("/index", indexHandler)
 
 	// Run the server on port 8080
 	if err := r.Run(":8080"); err != nil {
