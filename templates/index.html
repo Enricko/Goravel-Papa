@@ -288,23 +288,3 @@
         document.getElementById("total-value").innerHTML = "Rp." + formatTotalValue;
     }
 </script>
-<script>
-    function submitForm() {
-        // Get the form data
-        var formData = new FormData(document.getElementById("myForm"));
-
-        // Make a POST request to the server
-        fetch("/update", {
-            method: "POST",
-            body: formData
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                document.getElementById("output").innerText = data.message;
-            })
-            .catch(error => {
-                console.error("Error:", error);
-            });
-    }
-</script>
