@@ -43,7 +43,7 @@
             <div class="col-12 col-md-8">
                 <div class="float-left mt-3" style='font-size:13px'>
                     <div class='row' id='nama-outlet'>
-                        <div class='col-4'>Nama Outlet</div>
+                        <div class='col-4'>Nama Relasi</div>
                         <div class='col-8' id='value_nama_outlet'>:</div>
                     </div>
                     <div class='row' id='alamat'>
@@ -55,19 +55,19 @@
                         <div class='col-8' id='value_sales'>:</div>
                     </div>
                     <div class='row' id='nama-sales'>
-                        <div class='col-4'>Channel Outlet AAM</div>
+                        <div class='col-4'>Channel</div>
                         <div class='col-8' id='value_channel'>:</div>
                     </div>
                     <div class='row' id='nama-sales'>
-                        <div class='col-4'>AVG</div>
+                        <div class='col-4'>AVG 2023</div>
                         <div class='col-8' id='value_avg'>:</div>
                     </div>
                     <div class='row' id='nama-sales'>
-                        <div class='col-4'>Objective Harian</div>
+                        <div class='col-4'>AVG Q4 2023</div>
                         <div class='col-8' id='value_q_avg'>:</div>
                     </div>
                     <div class='row'>
-                        <div class='col-4'>Total Value</div>
+                        <div class='col-4'>Total Value HNA</div>
                         <div class='col-8'>: <span id='total-value'></span></div>
                     </div>
                 </div>
@@ -139,7 +139,7 @@
     "{{ end }}"
     function detail_outlet(value) {
         if (customer[value]) {
-            document.getElementById("value_nama_outlet").innerText = ": " + customer[value].branch;
+            document.getElementById("value_nama_outlet").innerText = ": " + customer[value].custname;
             document.getElementById("value_alamat").innerText = ": " + customer[value].alamat;
             document.getElementById("value_sales").innerText = ": " + customer[value].salesname;
             document.getElementById("value_channel").innerText = ": " + customer[value].channel;
