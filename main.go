@@ -4,18 +4,16 @@ import (
 	"log"
 	// "net/http"
 	"text/template"
-
 	// "os"
-	"time"
-
-	"github.com/gin-gonic/gin"
-
 	"bytes"
 	"fmt"
 	"io/ioutil"
 	https "net/http"
+	"time"
 
+	"github.com/gin-gonic/gin"
 	excelize "github.com/xuri/excelize/v2"
+
 )
 
 func main() {
@@ -26,7 +24,7 @@ func main() {
 	r.LoadHTMLGlob("templates/*")
 
 	// Define a route handler
-	r.GET("/index", indexHandler)
+	r.GET("/", indexHandler)
 
 	// Run the server on port 8080
 	if err := r.Run(":8080"); err != nil {
@@ -36,7 +34,7 @@ func main() {
 
 func indexHandler(c *gin.Context) {
 	// Create a product struct
-	data, err := openURLCust("https://www.dropbox.com/scl/fi/ga9aesugfhxrt2dmuknre/Data-base-aplikasi-bayer-joglopwk-160224.xlsx?rlkey=4x85x8rdq9r3x7wyzgxjnofki&dl=1")
+	data, err := openURLCust("https://www.dropbox.com/scl/fi/ga9aesugfhxrt2dmuknre/Data-base-aplikasi-bayer-joglopwk-160224.xlsx?rlkey=m19bvt1jkmowwckeghd6jdm83&st=foy5eyi1&dl=1")
 	if err != nil {
 		return
 	}
