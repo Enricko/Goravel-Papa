@@ -76,7 +76,7 @@ func main() {
 		log.Printf("Failed to start HTTPS server: %v", err)
 		log.Printf("Falling back to HTTP")
 		// If HTTPS fails, fall back to HTTP
-		if err := r.Run(":8080"); err != nil {
+		if err := r.Run(":8000"); err != nil {
 			log.Fatal("Error starting HTTP server:", err)
 		}
 	}
