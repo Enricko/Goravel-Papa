@@ -71,7 +71,7 @@ func main() {
 
 	// Try HTTPS first
 	log.Printf("Starting server on :8080")
-	r.Run(":8080")
+	// r.Run(":8080")
 	if err := server.ListenAndServeTLS("cert.pem", "key.pem"); err != nil {
 		log.Printf("Failed to start HTTPS server: %v", err)
 		log.Printf("Falling back to HTTP")
