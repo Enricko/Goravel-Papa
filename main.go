@@ -32,10 +32,12 @@ type ExlData struct {
 	Kota      string
 	SalesName string
 	Channel   string
+	Avg2022   string
 	Avg2023   string
 	Avg2024   string
 	Avg2025   string
 	Max       string
+	Potensial string
 }
 
 type PageData struct {
@@ -176,10 +178,10 @@ func openLocalCustFile(filePath string) ([]ExlData, error) {
 		rowData.Kota = getRowValue(row, 4)
 		rowData.SalesName = getRowValue(row, 5)
 		rowData.Channel = getRowValue(row, 6)
-		rowData.Avg2023 = getRowValue(row, 7)
-		rowData.Avg2024 = getRowValue(row, 8)
-		rowData.Avg2025 = getRowValue(row, 9)
-		rowData.Max = getRowValue(row, 10)
+		rowData.Avg2022 = getRowValue(row, 7)
+		rowData.Avg2023 = getRowValue(row, 8)
+		rowData.Avg2024 = getRowValue(row, 9)
+		rowData.Potensial = getRowValue(row, 10)
 
 		exlData = append(exlData, rowData)
 	}

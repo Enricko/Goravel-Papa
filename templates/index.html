@@ -344,6 +344,10 @@
                                 <div class="col-7" id="value_channel">: -</div>
                             </div>
                             <div class="customer-info-row row">
+                                <div class="col-5 info-label">AVG 2022</div>
+                                <div class="col-7" id="value_avg_2022">: -</div>
+                            </div>
+                            <div class="customer-info-row row">
                                 <div class="col-5 info-label">AVG 2023</div>
                                 <div class="col-7" id="value_avg_2023">: -</div>
                             </div>
@@ -352,11 +356,7 @@
                                 <div class="col-7" id="value_avg_2024">: -</div>
                             </div>
                             <div class="customer-info-row row">
-                                <div class="col-5 info-label">AVG 2025</div>
-                                <div class="col-7" id="value_avg_2025">: -</div>
-                            </div>
-                            <div class="customer-info-row row">
-                                <div class="col-5 info-label">MAX</div>
+                                <div class="col-5 info-label">Potensial</div>
                                 <div class="col-7" id="value_max">: -</div>
                             </div>
                         </div>
@@ -433,10 +433,11 @@
             "kota": "{{.Kota}}",
             "salesname": "{{.SalesName}}",
             "channel": "{{.Channel}}",
+            "avg2022": "{{.Avg2022}}",
             "avg2023": "{{.Avg2023}}",
             "avg2024": "{{.Avg2024}}",
-            "avg2025": "{{.Avg2025}}",
-            "max": "{{.Max}}",
+            // "avg2025": "{{.Avg2025}}",
+            "potensial": "{{.Potensial}}",
         }
         "{{ end }}"
 
@@ -446,10 +447,11 @@
                 document.getElementById("value_alamat").innerText = ": " + customer[value].alamat;
                 document.getElementById("value_sales").innerText = ": " + customer[value].salesname;
                 document.getElementById("value_channel").innerText = ": " + customer[value].channel;
+                document.getElementById("value_avg_2022").innerText = ": " + customer[value].avg2022;
                 document.getElementById("value_avg_2023").innerText = ": " + customer[value].avg2023;
                 document.getElementById("value_avg_2024").innerText = ": " + customer[value].avg2024;
-                document.getElementById("value_avg_2025").innerText = ": " + customer[value].avg2025;
-                document.getElementById("value_max").innerText = ": " + customer[value].max;
+                // document.getElementById("value_avg_2025").innerText = ": " + customer[value].avg2025;
+                document.getElementById("value_max").innerText = ": " + customer[value].potensial;
             } else {
                 console.log("Key does not exist");
             }
