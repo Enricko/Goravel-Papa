@@ -63,7 +63,7 @@ func main() {
 
 	// Create server configurations
 	server := &http.Server{
-		Addr:         ":8080",
+		Addr:         ":8000",
 		Handler:      r,
 		ReadTimeout:  15 * time.Second,
 		WriteTimeout: 15 * time.Second,
