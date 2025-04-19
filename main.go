@@ -71,7 +71,7 @@ func main() {
 
 	// Try HTTPS first
 	log.Printf("Starting server on :8080")
-	// r.Run(":8080")
+	r.Run(":8080")
 	if err := server.ListenAndServeTLS("cert.pem", "key.pem"); err != nil {
 		log.Printf("Failed to start HTTPS server: %v", err)
 		log.Printf("Falling back to HTTP")
@@ -84,7 +84,7 @@ func main() {
 
 func indexHandler(c *gin.Context) {
 	// Read customer data from local excel file
-	data, err := openLocalCustFile("excel/jogja.xlsx")
+	data, err := openLocalCustFile("excel/APL.xlsx")
 	if err != nil {
 		log.Printf("Error reading customer data: %v", err)
 		c.String(http.StatusInternalServerError, "Error reading customer data")
@@ -92,7 +92,7 @@ func indexHandler(c *gin.Context) {
 	}
 
 	// Read product data from local excel file
-	dataProduct, err := openLocalProductFile("excel/harga_jogja.xlsx")
+	dataProduct, err := openLocalProductFile("excel/APL.xlsx")
 	if err != nil {
 		log.Printf("Error reading product data: %v", err)
 		c.String(http.StatusInternalServerError, "Error reading product data")
@@ -139,7 +139,7 @@ func openLocalCustFile(filePath string) ([]ExlData, error) {
 	defer exlz.Close()
 
 	// Try to get rows from "Data Base" sheet
-	rows, err := exlz.GetRows("Data Base")
+	rows, err := exlz.GetRows("Data Base APL")
 	if err != nil {
 		// If "Data Base" sheet doesn't exist, try alternate names
 		alternateNames := []string{"Database", "Sheet1", "Data"}
