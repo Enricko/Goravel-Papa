@@ -1,290 +1,563 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Purchasing Order System</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
-        crossorigin="anonymous"></script>
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script> -->
-</head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+            crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --accent-color: #3b82f6;
+            --light-bg: #f1f5f9;
+            --border-radius: 8px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .card {
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            background-color: white;
+        }
+        
+        .header-card {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-control, .input-group-text, .btn {
+            border-radius: var(--border-radius);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        .btn-danger {
+            background-color: #dc2626;
+            border-color: #dc2626;
+        }
+        
+        .btn-danger:hover {
+            background-color: #b91c1c;
+            border-color: #b91c1c;
+        }
+        
+        .table {
+            box-shadow: var(--shadow);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+        
+        .table thead {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .search-container {
+            position: relative;
+        }
+        
+        .search-container i {
+            position: absolute;
+            top: 12px;
+            left: 15px;
+            color: #6b7280;
+        }
+        
+        #search-outlet, #add-produk {
+            padding-left: 40px;
+            height: 45px;
+        }
+        
+        .badge-info {
+            background-color: var(--accent-color);
+            color: white;
+            font-weight: normal;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+        
+        .product-row {
+            transition: all 0.3s ease;
+        }
+        
+        .product-row:hover {
+            background-color: rgba(59, 130, 246, 0.05);
+        }
+        
+        .autoComplete_wrapper > ul {
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-top: 5px;
+            border: 1px solid #e5e7eb;
+            padding: 5px 0;
+            max-height: 300px;
+            overflow-y: auto;
+            background-color: white;
+        }
+        
+        .autoComplete_wrapper > ul > li {
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        
+        .autoComplete_wrapper > ul > li:hover {
+            background-color: #e5e7eb;
+        }
+        
+        .po-header {
+            border-bottom: 3px solid var(--primary-color);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+        }
+        
+        .animation-fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .total-value-container {
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            font-size: 1.1rem;
+            margin: 1rem 0;
+            text-align: right;
+        }
+        
+        .customer-info-row {
+            margin-bottom: 8px;
+        }
+        
+        .info-label {
+            font-weight: 500;
+            color: #6b7280;
+        }
+        
+        .order-input {
+            font-size: 1.2rem;
+            font-weight: 500;
+            text-align: center;
+        }
+        
+        .btn-add-product {
+            height: 45px;
+            width: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .no-result {
+            padding: 10px 15px;
+            color: #6b7280;
+        }
+        
+        .highlight {
+            background-color: rgba(59, 130, 246, 0.1);
+            font-weight: bold;
+        }
+    </style>
+    </head>
 
-<body>
-    <div class="container-fluid mt-3 no-print" style="width:100%">
-        <div class="d-flex justify-content-between">
-            <div class="justify-content-start">
-                <input id="search-outlet" type="search" class="form-control mb-2" style="width:500px" autocomplete="off"
-                    onchange="return detail_outlet(value)">
-                <div class="row mb-2">
-                    <div class="col-10">
-                        <input id="add-produk" type="search" class="form-control" autocomplete="off">
-                    </div>
-                    <div class="col-1">
-                        <button class="btn btn-primary" onclick="return add_produk()">+</button>
-                    </div>
+    <body>
+        <div class="container py-4">
+            <div class="card header-card animation-fade-in mb-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h1 class="mb-0"><i class="fas fa-shopping-cart me-2"></i> Purchasing Order System</h1>
+                    <span class="badge-info">
+                        <i class="far fa-calendar-alt me-1"></i> {{ .time }}
+                    </span>
                 </div>
             </div>
-        </div>
-        <hr style="height:2px;border-width:0;color:gray;background-color:gray;">
-    </div>
-    <div class="container-fluid detail-transaksi" style="font-size:15px;width:700px">
-        <div class="row ">
-            <div class="col-12 col-md-4">
-                <div class="text-center mt-3">
-                    <p style='font-size:18px;font-weight:700'>PURCHASING ORDER</p><br>Tgl.{{ .time }}
-                </div>
-            </div>
 
-            <div class="col-12 col-md-8">
-                <div class="float-left mt-3" style='font-size:13px'>
-                    <div class='row' id='nama-outlet'>
-                        <div class='col-4'>Nama Relasi</div>
-                        <div class='col-8' id='value_nama_outlet'>:</div>
+            <div class="card p-4 mb-4 animation-fade-in">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h4 class="mb-3"><i class="fas fa-search me-2"></i>Find Customer</h4>
+                        <div class="search-container mb-3">
+                            <i class="fas fa-building"></i>
+                            <input id="search-outlet" type="search" class="form-control" style="width:100%" autocomplete="off"
+                                onchange="return detail_outlet(value)" placeholder="Search customer by ID or name...">
+                        </div>
                     </div>
-                    <div class='row' id='alamat'>
-                        <div class='col-4'>Alamat</div>
-                        <div class='col-8' id='value_alamat'>:</div>
-                    </div>
-                    <div class='row' id='nama-sales'>
-                        <div class='col-4'>Nama Sales</div>
-                        <div class='col-8' id='value_sales'>:</div>
-                    </div>
-                    <div class='row' id='nama-sales'>
-                        <div class='col-4'>Channel</div>
-                        <div class='col-8' id='value_channel'>:</div>
-                    </div>
-                    <div class='row' id='nama-sales'>
-                        <div class='col-4'>AVG 2023</div>
-                        <div class='col-8' id='value_avg'>:</div>
-                    </div>
-                    <div class='row' id='nama-sales'>
-                        <div class='col-4'>AVG Q4 2023</div>
-                        <div class='col-8' id='value_q_avg'>:</div>
-                    </div>
-                    <div class='row'>
-                        <div class='col-4'>Total Value HNA</div>
-                        <div class='col-8'>: <span id='total-value'></span></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class='d-flex justify-content-center'>
-            <table class="table-bordered table-responsive my-3">
-                <thead>
-                    <tr class="text-center">
-                        <th>KODE</th>
-                        <th>PRODUK</th>
-                        <th>HNA</th>
-                        <th>ORDER</th>
-                        <th>TOTAL VALUE</th>
-                        <th>DISC</th>
-                        <th>ePRF</th>
-                        <th style="border: 1px solid transparent"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{ range .product}}
-                    <tr id="produk-{{ .Code }}" class="d-none" style="position:relative">
-                        <td style='font-size:20px'>{{ .Code }}</td>
-                        <td style='font-size:13px'>{{ .NameProduct }}</td>
-                        <td class='text-center'>Rp.{{ .HNA }}</td>
-                        <td style='font-size:20px;text-align:center'><input type="number" style="width: 100px;"
-                                class="form-control text-center"
-                                oninput="return order(value,'{{ .HNA }}','{{ .Code }}')" id="order-{{ .Code }}"></td>
-                        <td id="total-{{ .Code }}"></td>
-                        <td>
-                            <div class="input-group flex-nowrap">
-                                <input type="number" class="form-control text-center" id="disc-{{ .Code }}"
-                                    aria-describedby="addon-wrapping" style="width:50px;"
-                                    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                    maxlength="2">
-                                <span class="input-group-text" id="addon-wrapping">%</span>
+
+                    <div class="col-lg-6">
+                        <h4 class="mb-3"><i class="fas fa-plus-circle me-2"></i>Add Product</h4>
+                        <div class="row">
+                            <div class="col-10 search-container">
+                                <i class="fas fa-box"></i>
+                                <input id="add-produk" type="search" class="form-control" autocomplete="off" placeholder="Search for products...">
                             </div>
-                        </td>
-                        <td><input type="text" style="width: 70px;" class="form-control text-center"
-                                id="eprf-{{ .Code }}"></td>
-                        <td style="border: 1px solid transparent"><button class="btn btn-danger"
-                                onclick="return remove_produk('{{ .Code }}')">-</button></td>
-                    </tr>
-                    {{end}}
-                </tbody>
-            </table>
-        </div>
-    </div>
+                            <div class="col-2">
+                                <button class="btn btn-primary btn-add-product" onclick="return add_produk()">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-</body>
+            <div class="card p-4 mb-4 detail-transaksi animation-fade-in">
+                <div class="row">
+                    <div class="col-md-4 mb-4 mb-md-0">
+                        <div class="po-header text-center">
+                            <h2 class="fw-bold">PURCHASING ORDER</h2>
+                            <div class="text-muted"><i class="far fa-calendar-alt me-1"></i> {{ .time }}</div>
+                        </div>
+                        <div class="total-value-container">
+                            <div>Total Value HNA</div>
+                            <div class="h3 mb-0 mt-2" id="total-value">Rp. 0</div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8">
+                        <div class="card h-100 p-3 bg-light">
+                            <h4 class="mb-3"><i class="fas fa-info-circle me-2"></i>Customer Details</h4>
+                            <div class="customer-info-row row" id="nama-outlet">
+                                <div class="col-5 info-label">Customer Name</div>
+                                <div class="col-7 fw-bold" id="value_nama_outlet">: -</div>
+                            </div>
+                            <div class="customer-info-row row" id="alamat">
+                                <div class="col-5 info-label">Address</div>
+                                <div class="col-7" id="value_alamat">: -</div>
+                            </div>
+                            <div class="customer-info-row row" id="nama-sales">
+                                <div class="col-5 info-label">Sales Representative</div>
+                                <div class="col-7" id="value_sales">: -</div>
+                            </div>
+                            <div class="customer-info-row row">
+                                <div class="col-5 info-label">Channel</div>
+                                <div class="col-7" id="value_channel">: -</div>
+                            </div>
+                            <div class="customer-info-row row">
+                                <div class="col-5 info-label">AVG 2023</div>
+                                <div class="col-7" id="value_avg_2023">: -</div>
+                            </div>
+                            <div class="customer-info-row row">
+                                <div class="col-5 info-label">AVG 2024</div>
+                                <div class="col-7" id="value_avg_2024">: -</div>
+                            </div>
+                            <div class="customer-info-row row">
+                                <div class="col-5 info-label">AVG 2025</div>
+                                <div class="col-7" id="value_avg_2025">: -</div>
+                            </div>
+                            <div class="customer-info-row row">
+                                <div class="col-5 info-label">MAX</div>
+                                <div class="col-7" id="value_max">: -</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive mt-4">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr class="text-center">
+                                <th>KODE</th>
+                                <th>PRODUK</th>
+                                <th>HNA</th>
+                                <th>ORDER</th>
+                                <th>TOTAL VALUE</th>
+                                <th>DISC</th>
+                                <th>ePRF</th>
+                                <th class="border-0"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{ range .product}}
+                            <tr id="produk-{{ .Code }}" class="d-none product-row">
+                                <td class="fw-bold">{{ .Code }}</td>
+                                <td>{{ .NameProduct }}</td>
+                                <td class="text-center">Rp.{{ .HNA }}</td>
+                                <td>
+                                    <input type="number" class="form-control order-input"
+                                        oninput="return order(value,'{{ .HNA }}','{{ .Code }}')" id="order-{{ .Code }}">
+                                </td>
+                                <td id="total-{{ .Code }}" class="fw-bold text-primary"></td>
+                                <td>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control text-center" id="disc-{{ .Code }}"
+                                            aria-describedby="addon-wrapping"
+                                            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                            maxlength="2">
+                                        <span class="input-group-text" id="addon-wrapping">%</span>
+                                    </div>
+                                </td>
+                                <td><input type="text" class="form-control text-center" id="eprf-{{ .Code }}"></td>
+                                <td class="text-center">
+                                    <button class="btn btn-danger btn-sm" onclick="return remove_produk('{{ .Code }}')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            {{end}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-end animation-fade-in">
+                <button class="btn btn-primary me-2">
+                    <i class="fas fa-save me-1"></i> Save Order
+                </button>
+                <button class="btn btn-secondary">
+                    <i class="fas fa-print me-1"></i> Print
+                </button>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/autoComplete.min.js"></script>
+        <script>
+        var customersId = [];
+        var customer = {};
+        "{{ range .customer }}"
+        customersId.push("{{ .CustId}}|{{.CustName}}")
+        customer["{{ .CustId}}|{{.CustName}}"] = {
+            "branch": "{{.Branch}}",
+            "custname": "{{.CustName}}",
+            "alamat": "{{.Alamat}}",
+            "kota": "{{.Kota}}",
+            "salesname": "{{.SalesName}}",
+            "channel": "{{.Channel}}",
+            "avg2023": "{{.Avg2023}}",
+            "avg2024": "{{.Avg2024}}",
+            "avg2025": "{{.Avg2025}}",
+            "max": "{{.Max}}",
+        }
+        "{{ end }}"
+
+        function detail_outlet(value) {
+            if (customer[value]) {
+                document.getElementById("value_nama_outlet").innerText = ": " + customer[value].custname;
+                document.getElementById("value_alamat").innerText = ": " + customer[value].alamat;
+                document.getElementById("value_sales").innerText = ": " + customer[value].salesname;
+                document.getElementById("value_channel").innerText = ": " + customer[value].channel;
+                document.getElementById("value_avg_2023").innerText = ": " + customer[value].avg2023;
+                document.getElementById("value_avg_2024").innerText = ": " + customer[value].avg2024;
+                document.getElementById("value_avg_2025").innerText = ": " + customer[value].avg2025;
+                document.getElementById("value_max").innerText = ": " + customer[value].max;
+            } else {
+                console.log("Key does not exist");
+            }
+        }
+
+        const autoCompleteJS = new autoComplete({
+            selector: "#search-outlet",
+            placeHolder: "Search Outlet...",
+            data: {
+                src: customersId,
+                cache: true,
+            },
+            resultsList: {
+                element: (list, data) => {
+                    if (!data.results.length) {
+                        const message = document.createElement("div");
+                        message.setAttribute("class", "no-result");
+                        message.innerHTML = `<span>Found No Results for "${data.query}"</span>`;
+                        list.prepend(message);
+                    }
+                },
+                noResults: true,
+            },
+            resultItem: {
+                highlight: true
+            },
+            events: {
+                input: {
+                    selection: (event) => {
+                        const selection = event.detail.selection.value;
+                        autoCompleteJS.input.value = selection;
+                    }
+                }
+            }
+        });
+
+        var customersIdProduct = [];
+        "{{ range .product }}"
+        customersIdProduct.push("{{ .Code}}|{{.NameProduct}}")
+        "{{ end }}"
+
+        const autoCompleteJS1 = new autoComplete({
+            selector: "#add-produk",
+            placeHolder: "Tambah Produk...",
+            data: {
+                src: customersIdProduct,
+                cache: true,
+            },
+            resultsList: {
+                element: (list, data) => {
+                    if (!data.results.length) {
+                        const message = document.createElement("div");
+                        message.setAttribute("class", "no-result");
+                        message.innerHTML = `<span>Found No Results for "${data.query}"</span>`;
+                        list.prepend(message);
+                    }
+                },
+                noResults: true,
+            },
+            resultItem: {
+                highlight: true
+            },
+            events: {
+                input: {
+                    selection: (event) => {
+                        const selection = event.detail.selection.value;
+                        autoCompleteJS1.input.value = selection;
+                    }
+                }
+            }
+        });
+
+        function add_produk() {
+            var produk = document.getElementById("add-produk").value;
+            if (!produk) {
+                alert("Please select a product first");
+                return;
+            }
+            
+            var arr = produk.split('|');
+            const productElement = document.getElementById("produk-" + arr[0]);
+            
+            if (productElement.classList.contains('d-none')) {
+                productElement.classList.remove('d-none');
+                productElement.classList.add('animation-fade-in');
+                
+                // Focus on the order input field
+                setTimeout(() => {
+                    document.getElementById("order-" + arr[0]).focus();
+                }, 100);
+                
+                document.getElementById("add-produk").value = "";
+            } else {
+                alert("This product is already added to the order");
+            }
+        }
+
+        function remove_produk(kode) {
+            if (confirm("Are you sure you want to remove this product?")) {
+                document.getElementById('total-' + kode).innerHTML = '';
+                document.getElementById("order-" + kode).value = null;
+                document.getElementById("disc-" + kode).value = null;
+                document.getElementById("eprf-" + kode).value = '';
+                
+                // Add fade-out animation
+                const element = document.getElementById("produk-" + kode);
+                element.style.opacity = "0";
+                element.style.transform = "translateY(-10px)";
+                
+                setTimeout(() => {
+                    document.getElementById("produk-" + kode).classList.add('d-none');
+                    element.style.opacity = "";
+                    element.style.transform = "";
+                    allTotalValue();
+                }, 300);
+            }
+        }
+
+        function parseHnaValue(hnaStr) {
+            // Remove "Rp." if present
+            hnaStr = hnaStr.replace('Rp.', '').trim();
+            
+            // Check if the value uses comma as thousand separator (37,700)
+            if (hnaStr.indexOf(',') !== -1 && hnaStr.indexOf('.') === -1) {
+                // Remove commas (thousand separators in US/UK format)
+                hnaStr = hnaStr.replace(/,/g, '');
+            } 
+            // Check if the value uses dot as thousand separator (37.700)
+            else if (hnaStr.indexOf('.') !== -1 && hnaStr.indexOf(',') === -1) {
+                // Remove dots (thousand separators in Indonesian format)
+                hnaStr = hnaStr.replace(/\./g, '');
+            }
+            // Handle case with both commas and dots (37,700.00 or 37.700,00)
+            else if (hnaStr.indexOf('.') !== -1 && hnaStr.indexOf(',') !== -1) {
+                // Determine which is the decimal separator based on position
+                // If comma is after dot, dot is thousand separator
+                if (hnaStr.lastIndexOf(',') > hnaStr.lastIndexOf('.')) {
+                    hnaStr = hnaStr.replace(/\./g, '');
+                    hnaStr = hnaStr.replace(',', '.');
+                } 
+                // If dot is after comma, comma is thousand separator
+                else {
+                    hnaStr = hnaStr.replace(/,/g, '');
+                }
+            }
+            
+            // Parse to float
+            return parseFloat(hnaStr);
+        }
+
+        function order(value, hna, kode) {
+            // Parse the HNA value correctly
+            var hnaValue = parseHnaValue(hna);
+            var quantity = parseFloat(value);
+            
+            if (isNaN(quantity) || quantity <= 0 || !value) {
+                document.getElementById("total-" + kode).innerHTML = '';
+            } else {
+                var number = quantity * hnaValue;
+                var total = new Intl.NumberFormat('id-ID').format(number);
+                document.getElementById("total-" + kode).innerHTML = "Rp." + total;
+            }
+            
+            allTotalValue();
+        }
+
+        function allTotalValue() {
+            var totalValueDisplay = 0;
+
+            "{{range .product}}"
+            var produkVal = document.getElementById("total-" + '{{ .Code }}').innerHTML;
+            if (produkVal != '') {
+                // Parse the total value correctly
+                var cleanValue = parseHnaValue(produkVal);
+                if (!isNaN(cleanValue)) {
+                    totalValueDisplay += cleanValue;
+                }
+            }
+            "{{end}}"
+            
+            var formatTotalValue = new Intl.NumberFormat('id-ID').format(totalValueDisplay);
+            document.getElementById("total-value").innerHTML = "Rp. " + formatTotalValue;
+        }
+    </script>
+    </body>
 
 </html>
-<script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/autoComplete.min.js"></script>
-<script>
-    var customersId = [];
-    var customer = {};
-    "{{ range .customer }}"
-    customersId.push("{{ .CustId}}|{{.CustName}}")
-    customer["{{ .CustId}}|{{.CustName}}"] = {
-        "branch": "{{.Branch}}",
-        "custname": "{{.CustName}}",
-        "alamat": "{{.Alamat}}",
-        "kota": "{{.Kota}}",
-        "salesname": "{{.SalesName}}",
-        "channel": "{{.Channel}}",
-        "avg2023": "{{.Avg2023}}",
-        "q4avg2023": "{{.Q4Avg2023}}",
-    }
-    "{{ end }}"
-    function detail_outlet(value) {
-        if (customer[value]) {
-            document.getElementById("value_nama_outlet").innerText = ": " + customer[value].custname;
-            document.getElementById("value_alamat").innerText = ": " + customer[value].alamat;
-            document.getElementById("value_sales").innerText = ": " + customer[value].salesname;
-            document.getElementById("value_channel").innerText = ": " + customer[value].channel;
-            document.getElementById("value_avg").innerText = ": " + customer[value].avg2023;
-            document.getElementById("value_q_avg").innerText = ": " + customer[value].q4avg2023;
-        } else {
-            console.log("Key does not exist");
-        }
-    }
-    const autoCompleteJS = new autoComplete({
-        selector: "#search-outlet",
-        placeHolder: "Search Outlet...",
-        data: {
-            src: customersId,
-            cache: true,
-        },
-        resultsList: {
-            element: (list, data) => {
-                if (!data.results.length) {
-                    // Create "No Results" message element
-                    const message = document.createElement("div");
-                    // Add class to the created element
-                    message.setAttribute("class", "no_result");
-                    // Add message text content
-                    message.innerHTML = `<span>Found No Results for "${data.query}"`;
-                    // Append message element to the results list
-                    list.prepend(message);
-                }
-            },
-            noResults: true,
-        },
-        resultItem: {
-            highlight: true
-        },
-        events: {
-            input: {
-                selection: (event) => {
-                    const selection = event.detail.selection.value;
-                    autoCompleteJS.input.value = selection;
-                }
-            }
-        }
-    });
-</script>
-<script>
-    var customersIdProduct = [];
-    "{{ range .product }}"
-    customersIdProduct.push("{{ .Code}}|{{.NameProduct}}")
-    "{{ end }}"
-    const autoCompleteJS1 = new autoComplete({
-        selector: "#add-produk",
-        placeHolder: "Tambah Produk...",
-        data: {
-            src: customersIdProduct,
-            cache: true,
-        },
-        resultsList: {
-            element: (list, data) => {
-                if (!data.results.length) {
-                    // Create "No Results" message element
-                    const message = document.createElement("div");
-                    // Add class to the created element
-                    message.setAttribute("class", "no_result");
-                    // Add message text content
-                    message.innerHTML = `<span>Found No Results for "${data.query}"`;
-                    // Append message element to the results list
-                    list.prepend(message);
-                }
-            },
-            noResults: true,
-        },
-        resultItem: {
-            highlight: true
-        },
-        events: {
-            input: {
-                selection: (event) => {
-                    const selection = event.detail.selection.value;
-                    autoCompleteJS1.input.value = selection;
-                }
-            }
-        }
-    });
-</script>
-
-<script type="text/javascript">
-    // function detail_outlet(value){
-    //     $.ajax({
-    //         type : 'get',
-    //         url : '/detail_transaksi',
-    //         data:{'search':value},
-    //         success:function(data){
-    //             $('.detail-transaksi').html(data);
-    //         }
-    //     });
-    // }
-    function add_produk() {
-        var produk = document.getElementById("add-produk").value;
-        var arr = produk.split('|');
-        document.getElementById("produk-" + arr[0]).classList.remove('d-none');
-        var number = 0;
-        "{{range .product}}"
-        var cek = document.getElementById("produk-" + "{{ .Code }}").classList.contains('d-none');
-        if (!cek) {
-            number += 1;
-            document.getElementById("no-" + "{{ .Code }}").innerHTML = number;
-        } else {
-
-        }
-        "{{end}}"
-    }
-    function remove_produk(kode) {
-        document.getElementById('total-' + kode).innerHTML = '';
-        document.getElementById("order-" + kode).value = null;
-        document.getElementById("disc-" + kode).value = null;
-        document.getElementById("eprf-" + kode).value = '';
-        document.getElementById("produk-" + kode).classList.add('d-none');
-        allTotalValue();
-    }
-    function order(value, hna, kode) {
-        var totalValueDisplay = 0;
-        var produk = document.getElementById("add-produk").value;
-        var number = value * hna;
-        var total = Intl.NumberFormat().format(number);
-        if (number <= 0) {
-            document.getElementById("total-" + kode).innerHTML = '';
-        } else {
-            document.getElementById("total-" + kode).innerHTML = "Rp." + total;
-        }
-        allTotalValue();
-    }
-    function allTotalValue() {
-        var totalValueDisplay = 0;
-
-        "{{range .product}}"
-        var produkVal = document.getElementById("total-" + '{{ .Code }}').innerHTML;
-        if (produkVal != '') {
-            var produkReplaceRp = produkVal.replace("Rp.", "");
-            var produkReplaceComa = produkReplaceRp.replaceAll(",", "");
-            var produkReplaceDot = produkReplaceComa.replaceAll(".", "");
-            var produkNumVal = parseInt(produkReplaceDot);
-            totalValueDisplay += produkNumVal;
-        }
-        "{{end}}"
-        var formatTotalValue = Intl.NumberFormat().format(totalValueDisplay);
-        document.getElementById("total-value").innerHTML = "Rp." + formatTotalValue;
-    }
-</script>
