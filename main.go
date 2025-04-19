@@ -61,9 +61,25 @@ func main() {
 	// Define a route handler
 	r.GET("/", indexHandler)
 
-	// Start the server
+	// Create server configurations
+	server := &http.Server{
+		Addr:         ":8080",
+		Handler:      r,
+		ReadTimeout:  15 * time.Second,
+		WriteTimeout: 15 * time.Second,
+	}
+
+	// Try HTTPS first
 	log.Printf("Starting server on :8080")
-	r.Run(":8080")
+	// r.Run(":8080")
+	if err := server.ListenAndServeTLS("cert.pem", "key.pem"); err != nil {
+		log.Printf("Failed to start HTTPS server: %v", err)
+		log.Printf("Falling back to HTTP")
+		// If HTTPS fails, fall back to HTTP
+		if err := r.Run(":8080"); err != nil {
+			log.Fatal("Error starting HTTP server:", err)
+		}
+	}
 }
 
 func indexHandler(c *gin.Context) {
